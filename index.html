@@ -514,7 +514,7 @@
     function parseNumeric(price) {
       if (!price) return null;
       const normalized = price.replace(/,/g, "").replace(/\+/g, "").trim();
-      const rangeMatch = normalized.match(/(\d+(?:\.\d*)?)[^\d]+(\d+(?:\.\d*)?)/);
+      const rangeMatch = normalized.match(/(\d+(?:\.\d*)?)\s*[-–]\s*(\d+(?:\.\d*)?)/);
       if (rangeMatch) {
         return (Number(rangeMatch[1]) + Number(rangeMatch[2])) / 2;
       }
@@ -525,7 +525,7 @@
     function isRangePrice(price) {
       if (!price) return false;
       const normalized = price.replace(/,/g, "").replace(/\+/g, "").trim();
-      return /(\d+(?:\.\d*)?)[^\d]+(\d+(?:\.\d*)?)/.test(normalized);
+      return /(\d+(?:\.\d*)?)\s*[-–]\s*(\d+(?:\.\d*)?)/.test(normalized);
     }
 
     function formatPrice(price) {
