@@ -267,16 +267,45 @@
       background: rgba(255,255,255,0.08);
       color: var(--text);
       white-space: nowrap;
+      position: relative;
+    }
+
+    /* Tooltip showing previous price on hover (uses data-prev attribute) */
+    .badge[data-prev]:hover::after {
+      content: attr(data-prev);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 15, 15, 0.92);
+      color: #fff;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    .badge[data-prev]:hover::before {
+      content: "";
+      position: absolute;
+      bottom: calc(100% + 2px);
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid rgba(15, 15, 15, 0.92);
+      z-index: 10;
     }
 
     .badge.increase {
-      color: #90f9b4;
-      background: rgba(42, 163, 94, 0.18);
+      color: #ff9b9b;
+      background: rgba(236, 109, 109, 0.18);
     }
 
     .badge.decrease {
-      color: #ff9b9b;
-      background: rgba(236, 109, 109, 0.18);
+      color: #90f9b4;
+      background: rgba(42, 163, 94, 0.18);
     }
 
     .badge.stable {
@@ -365,7 +394,7 @@
 
         <footer class="footer">
           <div>Last updated: May 26, 2026</div>
-          <div>Fully self-contained page for AppleSMP pricing.</div>
+          <div>For all your pricing needs.</div>
         </footer>
       </main>
     </div>
@@ -384,7 +413,7 @@
       { name: "Trident w/ enchants", category: "popular", subcategory: "", price: "50,000–75,000", prevPrice: null },
       { name: "Trident base", category: "popular", subcategory: "", price: "15,000", prevPrice: null },
       { name: "Enchanted Golden Apple", category: "popular", subcategory: "", price: "20,000–30,000", prevPrice: null },
-      { name: "Bee Key", category: "popular", subcategory: "", price: "250,000–400,000", prevPrice: null },
+      { name: "Bee Key", category: "popular", subcategory: "", price: "300,000", prevPrice: "250,000–400,000" },
       { name: "Mace w/o Wind Burst", category: "popular", subcategory: "", price: "100,000", prevPrice: null },
       { name: "Mace w/ Wind Burst", category: "popular", subcategory: "", price: "250,000+", prevPrice: null },
       { name: "All Wool", category: "building", subcategory: "", price: "3", prevPrice: null },
@@ -548,14 +577,22 @@
       const current = parseNumeric(price);
       const previous = parseNumeric(prevPrice);
       if (current == null || previous == null || previous === 0) {
-        return createBadge("No change", "stable");
+        const badge = createBadge("No change", "stable");
+        badge.title = `Previous: ${formatPrice(prevPrice)}`;
+        badge.dataset.prev = formatPrice(prevPrice);
+        badge.setAttribute('aria-label', `Previous: ${formatPrice(prevPrice)}`);
+        return badge;
       }
       const change = ((current - previous) / previous) * 100;
       const rounded = Math.round(change);
-      const arrow = rounded === 0 ? "■" : rounded > 0 ? "🔺" : "🔻";
+      const arrow = rounded === 0 ? "■" : rounded > 0 ? "▲ " : "▼ ";
       const cls = rounded === 0 ? "stable" : rounded > 0 ? "increase" : "decrease";
       const sign = rounded > 0 ? "+" : "";
-      return createBadge(`${arrow}${sign}${rounded}%`, cls);
+      const badge = createBadge(`${arrow}${sign}${rounded}%`, cls);
+      badge.title = `Previous: ${formatPrice(prevPrice)}`;
+      badge.dataset.prev = formatPrice(prevPrice);
+      badge.setAttribute('aria-label', `Change: ${sign}${rounded}%. Previous: ${formatPrice(prevPrice)}`);
+      return badge;
     }
 
     function createBadge(text, type) {
