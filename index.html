@@ -246,8 +246,8 @@
 
     .item-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
     }
 
     /* Ensure there's spacing between separate subcategory grids inside a section */
@@ -270,16 +270,26 @@
     .card {
       display: grid;
       gap: 10px;
-      padding: 18px;
+      padding: 22px;
+      min-height: 96px;
       border-radius: 22px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.22s cubic-bezier(.2,.9,.3,1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+      align-items: start;
     }
 
     .card:hover {
-      transform: translateY(-1px);
-      border-color: rgba(136, 209, 132, 0.18);
+      transform: translateY(-3px);
+      border-color: rgba(136, 209, 132, 0.14);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    }
+
+    .card:focus-within,
+    .card:focus {
+      outline: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35), 0 0 0 3px rgba(136,209,132,0.05);
     }
 
     .card-title {
@@ -366,6 +376,73 @@
       background: rgba(255,255,255,0.06);
     }
 
+    /* Tag chips next to item names */
+    .tags {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      max-width: 640px;
+    }
+
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.04);
+      cursor: default;
+      white-space: nowrap;
+    }
+
+    .tag-chip:focus {
+      outline: 2px solid rgba(136,209,132,0.22);
+    }
+
+    .tag-add {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed rgba(255,255,255,0.06);
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .tag-picker {
+      position: absolute;
+      z-index: 50;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      padding: 8px;
+      border-radius: 10px;
+      display: grid;
+      gap: 6px;
+      box-shadow: var(--shadow);
+      min-width: 180px;
+    }
+
+    .tag-picker button {
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+      border: none;
+      cursor: pointer;
+    }
+
+    .tag-picker button:hover { background: rgba(255,255,255,0.03); }
+
     .placeholder {
       min-height: 160px;
       display: grid;
@@ -380,16 +457,19 @@
     }
 
     .footer {
-      display: flex;
-      justify-content: space-between;
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
-      padding: 18px 22px;
-      border-radius: 26px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: var(--muted);
-      font-size: 0.95rem;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: default;
+      white-space: nowrap;
+
     }
 
     @media (max-width: 900px) {
@@ -478,7 +558,7 @@
       { name: "Trident w/ enchants", category: "popular", subcategory: "", price: "50,000–75,000", prevPrice: null },
       { name: "Trident base", category: "popular", subcategory: "", price: "15,000", prevPrice: null },
       { name: "Enchanted Golden Apple", category: "popular", subcategory: "", price: "20,000–30,000", prevPrice: null },
-      { name: "Bee Key", category: "popular", subcategory: "", price: "300,000", prevPrice: "250,000–400,000" },
+      { name: "Bee Key", category: "popular", subcategory: "", price: "300,000", tags:["rare","limited"], prevPrice: "250,000–400,000" },
       { name: "Mace w/o Wind Burst", category: "popular", subcategory: "", price: "100,000", prevPrice: null },
       { name: "Mace w/ Wind Burst", category: "popular", subcategory: "", price: "250,000+", prevPrice: null },
       { name: "All Wool", category: "building", subcategory: "", price: "3", prevPrice: null },
@@ -533,11 +613,13 @@
       { name: "Soul Speed III", category: "books", subcategory: "special", price: "47,500", prevPrice: null },
       { name: "Oak", category: "building", subcategory: "logs", price: "40", prevPrice: null },
       { name: "Dark Oak", category: "building", subcategory: "logs", price: "3", prevPrice: null },
+      { name: "Pale Oak", category: "building", subcategory: "logs", price: "100", prevPrice: null },
       { name: "Acacia", category: "building", subcategory: "logs", price: "40", prevPrice: null },
       { name: "Jungle", category: "building", subcategory: "logs", price: "30", prevPrice: null },
       { name: "Birch", category: "building", subcategory: "logs", price: "5", prevPrice: null },
       { name: "Cherry", category: "building", subcategory: "logs", price: "45", prevPrice: null },
       { name: "Spruce", category: "building", subcategory: "logs", price: "16", prevPrice: null },
+      { name: "All Leaves", category: "building", subcategory: "", price: "10", prevPrice: null },
     ];
 
     const sectionOrder = [
@@ -722,6 +804,36 @@
       return badge;
     }
 
+    // Tag definitions (used for labels & tooltips). Tags are applied manually in the `PRICES` array.
+    const TAG_DEFS = [
+      { id: 'limited-market', label: 'Limited Market', desc: 'This item has a limited market. It is controlled by very few people.' },
+      { id: 'rare', label: 'Rare', desc: 'This item is rare. Its price will be higher for this reason.' },
+      { id: 'limited', label: 'Limited', desc: 'This item is limited. There is a set amount of how many there can be, and it will be/is not obtainable naturally.' },
+      { id: 'bad-deal', label: 'Bad Deal', desc: 'This item is priced too high. The market reflects this is the price, but it is too high for what it should be, {betterPrice}.' },
+      { id: 'uncertain', label: 'Uncertain', desc: 'This item is available, but has an unknown price. The market shows demand for this item, but there have not been enough sales to determine a fair price.' },
+    ];
+
+    function getTagDef(id) {
+      return TAG_DEFS.find((t) => t.id === id);
+    }
+
+    // Render only tags defined on the item. Tags are not editable via the UI — edit `PRICES` to change tags.
+    function createTagsContainer(item) {
+      const container = document.createElement('span');
+      container.className = 'tags';
+      const applied = item.tags || [];
+      applied.forEach((tagId) => {
+        const def = getTagDef(tagId);
+        if (!def) return;
+        const chip = document.createElement('span');
+        chip.className = 'tag-chip';
+        chip.textContent = def.label;
+        chip.title = def.desc.replace('{betterPrice}', item.betterPrice || 'N/A');
+        container.appendChild(chip);
+      });
+      return container;
+    }
+
     function renderItems(filter = "") {
       getSections().forEach((section) => {
         const container = document.getElementById(`category-${normalizeId(section)}`);
@@ -807,12 +919,23 @@
 
             const title = document.createElement("div");
             title.className = "card-title";
+
+            const left = document.createElement('div');
+            left.style.display = 'inline-flex';
+            left.style.alignItems = 'center';
+            left.style.gap = '8px';
+
             const name = document.createElement("span");
             name.textContent = item.name;
+
+            const tagsEl = createTagsContainer(item);
+
+            left.append(name, tagsEl);
+
             const price = document.createElement("span");
             price.className = "price";
             price.textContent = formatPrice(item.price);
-            title.append(name, price);
+            title.append(left, price);
 
             const meta = document.createElement("div");
             meta.className = "item-meta";
