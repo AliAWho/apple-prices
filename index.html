@@ -178,6 +178,42 @@
       color: rgba(255,255,255,0.58);
     }
 
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .controls label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .controls select {
+      padding: 8px 36px 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03)), var(--surface-muted);
+      color: var(--text);
+      font-size: 0.95rem;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+      /* Inline SVG chevron, using theme text color */
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23e6f5d0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>");
+    }
+
+    .controls select:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .section {
       padding: 20px;
       border-radius: 30px;
@@ -394,8 +430,20 @@
         <section class="toolbar" aria-label="Search and controls">
           <h2>Search items</h2>
           <div class="search-box">
-            <input id="searchInput" type="search" placeholder="Search by item name..." aria-label="Search items" />
-          </div>
+              <input id="searchInput" type="search" placeholder="Search by item name..." aria-label="Search items" />
+            </div>
+
+            <div class="controls">
+              <label><input id="enableSort" type="checkbox" /> Enable sorting</label>
+              <select id="sortKey" disabled>
+                <option value="price">Price</option>
+                <option value="name">Name</option>
+              </select>
+              <select id="sortOrder" disabled>
+                <option value="desc">High → Low / Z → A</option>
+                <option value="asc">Low → High / A → Z</option>
+              </select>
+            </div>
         </section>
 
         <div id="sectionsContainer"></div>
@@ -495,6 +543,9 @@
     const navList = document.getElementById("navList");
     const sectionsContainer = document.getElementById("sectionsContainer");
     const searchInput = document.getElementById("searchInput");
+    const enableSort = document.getElementById("enableSort");
+    const sortKey = document.getElementById("sortKey");
+    const sortOrder = document.getElementById("sortOrder");
 
     function normalizeId(text) {
       return text
@@ -712,7 +763,25 @@
         }
 
         subcategories.forEach((subcategory) => {
-          const groupItems = matches.filter((item) => (item.subcategory || "") === subcategory);
+          let groupItems = matches.filter((item) => (item.subcategory || "") === subcategory);
+
+          // Optional sorting when enabled
+          if (enableSort && enableSort.checked) {
+            const key = sortKey.value;
+            const order = sortOrder.value;
+            groupItems.sort((a, b) => {
+              if (key === "price") {
+                const na = parseNumeric(a.price);
+                const nb = parseNumeric(b.price);
+                const va = na == null ? -Infinity : na;
+                const vb = nb == null ? -Infinity : nb;
+                return order === "desc" ? vb - va : va - vb;
+              }
+              // name
+              const cmp = a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+              return order === "desc" ? -cmp : cmp;
+            });
+          }
           if (!groupItems.length) return;
 
           if (subcategory && section !== "price decreases" && section !== "price increases") {
@@ -758,6 +827,18 @@
     searchInput.addEventListener("input", () => {
       renderItems(searchInput.value.trim().toLowerCase());
     });
+
+    // Sorting control behavior
+    if (enableSort) {
+      enableSort.addEventListener("change", () => {
+        const enabled = enableSort.checked;
+        sortKey.disabled = !enabled;
+        sortOrder.disabled = !enabled;
+        renderItems(searchInput.value.trim().toLowerCase());
+      });
+      sortKey.addEventListener("change", () => renderItems(searchInput.value.trim().toLowerCase()));
+      sortOrder.addEventListener("change", () => renderItems(searchInput.value.trim().toLowerCase()));
+    }
 
     createSections();
     createNav();
