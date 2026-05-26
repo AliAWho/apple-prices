@@ -214,6 +214,23 @@
       gap: 16px;
     }
 
+    /* Ensure there's spacing between separate subcategory grids inside a section */
+    .section > div[id^="category-"] {
+      display: grid;
+      gap: 16px;
+    }
+
+    /* Larger spacing between groups for synthetic increase/decrease sections */
+    .section[data-section="price increases"] > div[id^="category-"],
+    .section[data-section="price decreases"] > div[id^="category-"] {
+      gap: 24px;
+    }
+
+    .section[data-section="price increases"] .item-grid,
+    .section[data-section="price decreases"] .item-grid {
+      gap: 24px;
+    }
+
     .card {
       display: grid;
       gap: 10px;
@@ -272,7 +289,7 @@
 
     /* Tooltip showing previous price on hover (uses data-prev attribute) */
     .badge[data-prev]:hover::after {
-      content: attr(data-prev);
+      content: "Was " attr(data-prev);
       position: absolute;
       bottom: calc(100% + 8px);
       left: 50%;
@@ -461,7 +478,11 @@
       { name: "Bread", category: "food", subcategory: "", price: "1", prevPrice: null },
       { name: "Baked Potato", category: "food", subcategory: "", price: "2", prevPrice: null },
       { name: "Cooked Porkchop", category: "food", subcategory: "", price: "20", prevPrice: null },
-      { name: "Pufferfish", category: "food", subcategory: "", price: "500", prevPrice: null }
+      { name: "Pufferfish", category: "food", subcategory: "", price: "500", prevPrice: null },
+      { name: "All Books", category: "books", subcategory: "normal", price: "900", prevPrice: "1,000"},
+      { name: "Wind Burst I", category: "books", subcategory: "special", price: "125,000", prevPrice: null },
+      { name: "Swift Sneak III", category: "books", subcategory: "special", price: "99,000", prevPrice: null },
+      { name: "Soul Speed III", category: "books", subcategory: "special", price: "47,500", prevPrice: null }
     ];
 
     const sectionOrder = [
@@ -495,7 +516,47 @@
     function getSections() {
       const unique = new Set(sectionOrder);
       PRICES.forEach((item) => unique.add(item.category));
-      return Array.from(unique);
+      let sections = Array.from(unique);
+
+      // Ensure 'popular' is first
+      const pIdx = sections.indexOf("popular");
+      if (pIdx > 0) {
+        sections.splice(pIdx, 1);
+        sections.unshift("popular");
+      }
+
+      // Compute whether there are items that increased or decreased
+      const increasesExist = PRICES.some((item) => {
+        if (!item.prevPrice) return false;
+        const cur = parseNumeric(item.price);
+        const prev = parseNumeric(item.prevPrice);
+        return cur != null && prev != null && cur > prev;
+      });
+      const decreasesExist = PRICES.some((item) => {
+        if (!item.prevPrice) return false;
+        const cur = parseNumeric(item.price);
+        const prev = parseNumeric(item.prevPrice);
+        return cur != null && prev != null && cur < prev;
+      });
+
+      // Insert synthetic sections directly after 'popular' when they have items
+      const insertAt = Math.max(0, sections.indexOf("popular")) + 1;
+      if (increasesExist && sections.indexOf("price increases") === -1) {
+        sections.splice(insertAt, 0, "price increases");
+      }
+      if (decreasesExist && sections.indexOf("price decreases") === -1) {
+        const after = sections.indexOf("price increases") !== -1 ? sections.indexOf("price increases") + 1 : insertAt;
+        sections.splice(after, 0, "price decreases");
+      }
+
+      // Keep 'no economy' at the end
+      const idx = sections.findIndex((s) => s === "no economy");
+      if (idx !== -1) {
+        sections.splice(idx, 1);
+        sections.push("no economy");
+      }
+
+      return sections;
     }
 
     function getSubcategories(category) {
@@ -512,6 +573,7 @@
         const sectionEl = document.createElement("section");
         sectionEl.className = "section";
         sectionEl.id = normalizeId(section);
+        sectionEl.dataset.section = section;
 
         const header = document.createElement("div");
         header.className = "section-header";
@@ -607,10 +669,31 @@
         const container = document.getElementById(`category-${normalizeId(section)}`);
         container.innerHTML = "";
 
-        const matches = PRICES.filter((item) => {
-          const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
-          return item.category === section && searchText.includes(filter);
-        });
+        let matches;
+        if (section === "price increases") {
+          matches = PRICES.filter((item) => {
+            if (!item.prevPrice) return false;
+            const cur = parseNumeric(item.price);
+            const prev = parseNumeric(item.prevPrice);
+            if (cur == null || prev == null) return false;
+            const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
+            return cur > prev && searchText.includes(filter);
+          });
+        } else if (section === "price decreases") {
+          matches = PRICES.filter((item) => {
+            if (!item.prevPrice) return false;
+            const cur = parseNumeric(item.price);
+            const prev = parseNumeric(item.prevPrice);
+            if (cur == null || prev == null) return false;
+            const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
+            return cur < prev && searchText.includes(filter);
+          });
+        } else {
+          matches = PRICES.filter((item) => {
+            const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
+            return item.category === section && searchText.includes(filter);
+          });
+        }
 
         if (!matches.length) {
           const empty = document.createElement("div");
@@ -620,11 +703,19 @@
           return;
         }
 
-        getSubcategories(section).forEach((subcategory) => {
+        let subcategories;
+        if (section === "price increases" || section === "price decreases") {
+          const vals = matches.map((item) => item.subcategory || "").filter((v, i, self) => self.indexOf(v) === i);
+          subcategories = vals.length ? vals : [""];
+        } else {
+          subcategories = getSubcategories(section);
+        }
+
+        subcategories.forEach((subcategory) => {
           const groupItems = matches.filter((item) => (item.subcategory || "") === subcategory);
           if (!groupItems.length) return;
 
-          if (subcategory) {
+          if (subcategory && section !== "price decreases" && section !== "price increases") {
             const subheading = document.createElement("h3");
             subheading.className = "subcategory-header";
             subheading.textContent = displayTitle(subcategory);
