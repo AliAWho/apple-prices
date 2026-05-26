@@ -1,2 +1,2 @@
-# apple-prices
-A list of current market trends for AppleSMP.
+# AppleSMP Market Trends
+Incomplete. This **does** use AI, I'm not good at making pages!
