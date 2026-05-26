@@ -349,6 +349,13 @@
 
         <div id="sectionsContainer"></div>
 
+        <section class="section credits">
+          <div class="section-header">
+            <h2>Credits</h2>
+          </div>
+          <p>Guide maintained manually in the page data array. Use this as a general AppleSMP economy reference.</p>
+        </section>
+
         <footer class="footer">
           <div>Last updated: May 26, 2026</div>
           <div>Fully self-contained page for AppleSMP pricing.</div>
@@ -374,6 +381,9 @@
       { name: "Mace w/o Wind Burst", category: "popular", subcategory: "", price: "100,000", prevPrice: null },
       { name: "Mace w/ Wind Burst", category: "popular", subcategory: "", price: "250,000+", prevPrice: null },
       { name: "All Wool", category: "building", subcategory: "wool", price: "3", prevPrice: null },
+      { name: "Prismarine", category: "building", subcategory: "", price: "3", prevPrice: null },
+      { name: "Prismarine Bricks", category: "building", subcategory: "", price: "6.75", prevPrice: null },
+      { name: "Sea Lantern", category: "building", subcategory: "", price: "10", prevPrice: null },
       { name: "White", category: "decoration", subcategory: "dyes", price: "2", prevPrice: null },
       { name: "Black", category: "decoration", subcategory: "dyes", price: "7–10", prevPrice: null },
       { name: "Light Blue", category: "decoration", subcategory: "dyes", price: "4", prevPrice: null },
@@ -407,15 +417,22 @@
       { name: "Emerald", category: "materials", subcategory: "ores - deepslate", price: "10,000", prevPrice: null },
       { name: "Nether Gold", category: "materials", subcategory: "ores - nether", price: "50", prevPrice: null },
       { name: "Nether Quartz", category: "materials", subcategory: "ores - nether", price: "30", prevPrice: null },
-      { name: "Ancient Debris", category: "materials", subcategory: "ores - nether", price: "5,000", prevPrice: null }
+      { name: "Ancient Debris", category: "materials", subcategory: "ores - nether", price: "5,000", prevPrice: null },
+      { name: "Prismarine Shard", category: "materials", subcategory: "items", price: "0.75", prevPrice: null },
+      { name: "Prismarine Crystals", category: "materials", subcategory: "items", price: "1.25", prevPrice: null },
+      { name: "Golden Carrot", category: "food", subcategory: "", price: "13", prevPrice: null },
+      { name: "Carrot", category: "food", subcategory: "", price: "0.50", prevPrice: null },
+      { name: "Bread", category: "food", subcategory: "", price: "1", prevPrice: null },
+      { name: "Baked Potato", category: "food", subcategory: "", price: "2", prevPrice: null },
+      { name: "Cooked Porkchop", category: "food", subcategory: "", price: "20", prevPrice: null },
+      { name: "Pufferfish", category: "food", subcategory: "", price: "500", prevPrice: null }
     ];
 
     const sectionOrder = [
       "popular",
       "building",
       "decoration",
-      "materials",
-      "no economy"
+      "materials",      "food",      "no economy"
     ];
 
     const navList = document.getElementById("navList");
