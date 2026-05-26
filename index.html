@@ -339,40 +339,7 @@
           </div>
         </section>
 
-        <section class="section" id="popular">
-          <div class="section-header"><h2>Popular</h2></div>
-          <div class="item-grid" id="Popular"></div>
-        </section>
-
-        <section class="section" id="building-wool">
-          <div class="section-header"><h2>Building – Wool</h2></div>
-          <div class="item-grid" id="Building – Wool"></div>
-        </section>
-
-        <section class="section" id="decoration-dyes">
-          <div class="section-header"><h2>Decoration – Dyes</h2></div>
-          <div class="item-grid" id="Decoration – Dyes"></div>
-        </section>
-
-        <section class="section" id="ores-normal">
-          <div class="section-header"><h2>Ores – Normal</h2></div>
-          <div class="item-grid" id="Ores – Normal"></div>
-        </section>
-
-        <section class="section" id="ores-deepslate">
-          <div class="section-header"><h2>Ores – Deepslate</h2></div>
-          <div class="item-grid" id="Ores – Deepslate"></div>
-        </section>
-
-        <section class="section" id="ores-nether">
-          <div class="section-header"><h2>Ores – Nether</h2></div>
-          <div class="item-grid" id="Ores – Nether"></div>
-        </section>
-
-        <section class="section" id="no-economy">
-          <div class="section-header"><h2>No Economy</h2></div>
-          <div class="placeholder">No Economy items go here when they are added. This section is intentionally empty for now.</div>
-        </section>
+        <div id="sectionsContainer"></div>
 
         <footer class="footer">
           <div>Last updated: May 26, 2026</div>
@@ -383,6 +350,10 @@
   </div>
 
   <script>
+    // Update the PRICES array to add/remove items or categories.
+    // Keep item prices as strings so ranges like "7-10" and exact values like "3" work.
+    // Set prevPrice to the previous price string to show a percent change badge.
+    // Use category text exactly as you want it to appear in the guide.
     const PRICES = [
       { name: "Beacon", category: "Popular", subcategory: "", price: "30,000–45,000", prevPrice: null },
       { name: "Heavy Core", category: "Popular", subcategory: "", price: "80,000–100,000", prevPrice: null },
@@ -430,21 +401,61 @@
       { name: "Ancient Debris", category: "Ores – Nether", subcategory: "", price: "5,000", prevPrice: null }
     ];
 
-    const sections = [
+    const sectionOrder = [
       "Popular",
       "Building – Wool",
       "Decoration – Dyes",
       "Ores – Normal",
       "Ores – Deepslate",
-      "Ores – Nether"
+      "Ores – Nether",
+      "No Economy"
     ];
 
     const navList = document.getElementById("navList");
+    const sectionsContainer = document.getElementById("sectionsContainer");
     const searchInput = document.getElementById("searchInput");
 
+    function normalizeId(text) {
+      return text
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/–/g, "-")
+        .replace(/[^a-z0-9-]/gi, "");
+    }
+
+    function getSections() {
+      const unique = new Set(sectionOrder);
+      PRICES.forEach((item) => unique.add(item.category));
+      return Array.from(unique);
+    }
+
+    function createSections() {
+      sectionsContainer.innerHTML = "";
+      getSections().forEach((section) => {
+        const sectionEl = document.createElement("section");
+        sectionEl.className = "section";
+        sectionEl.id = normalizeId(section);
+
+        const header = document.createElement("div");
+        header.className = "section-header";
+        const title = document.createElement("h2");
+        title.textContent = section;
+        header.appendChild(title);
+
+        const grid = document.createElement("div");
+        grid.className = "item-grid";
+        grid.id = `grid-${normalizeId(section)}`;
+
+        sectionEl.append(header, grid);
+        sectionsContainer.appendChild(sectionEl);
+      });
+    }
+
     function createNav() {
-      sections.forEach((section) => {
-        const id = section.toLowerCase().replace(/\s+/g, "-").replace(/–/g, "-").replace(/[^a-z0-9-]/gi, "");
+      navList.innerHTML = "";
+      getSections().forEach((section) => {
+        const id = normalizeId(section);
         const item = document.createElement("li");
         const link = document.createElement("a");
         link.href = `#${id}`;
@@ -488,14 +499,18 @@
     }
 
     function renderItems(filter = "") {
-      sections.forEach((section) => {
-        const container = document.getElementById(section);
+      getSections().forEach((section) => {
+        const container = document.getElementById(`grid-${normalizeId(section)}`);
         container.innerHTML = "";
-        const matches = PRICES.filter((item) => item.category === section && item.name.toLowerCase().includes(filter));
+        const matches = PRICES.filter((item) => {
+          const searchText = `${item.name} ${item.category}`.toLowerCase();
+          return item.category === section && searchText.includes(filter);
+        });
+
         if (!matches.length) {
           const empty = document.createElement("div");
           empty.className = "placeholder";
-          empty.textContent = "No matching items found.";
+          empty.textContent = filter ? "No matching items found." : "No items are available in this category yet.";
           container.appendChild(empty);
           return;
         }
@@ -519,6 +534,12 @@
           categoryLabel.textContent = item.category;
           meta.appendChild(categoryLabel);
 
+          if (item.subcategory) {
+            const subcategory = document.createElement("span");
+            subcategory.textContent = item.subcategory;
+            meta.appendChild(subcategory);
+          }
+
           const badge = makeBadge(item.price, item.prevPrice);
           if (badge) meta.appendChild(badge);
           card.append(title, meta);
@@ -531,6 +552,7 @@
       renderItems(searchInput.value.trim().toLowerCase());
     });
 
+    createSections();
     createNav();
     renderItems();
   </script>
