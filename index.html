@@ -302,6 +302,25 @@
       color: var(--text);
     }
 
+    .item-image {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .item-meta {
       display: flex;
       justify-content: space-between;
@@ -472,6 +491,160 @@
 
     }
 
+    /* Deal of the Day Section */
+    .section.deal-of-the-day {
+      background: linear-gradient(135deg, rgba(216, 183, 106, 0.08), rgba(136, 209, 132, 0.05));
+      border: 1px solid rgba(216, 183, 106, 0.2);
+    }
+
+    .deal-of-the-day .section-header {
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .deal-of-the-day .section-header h2 {
+      text-align: center;
+      background: linear-gradient(90deg, var(--gold), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .deal-card {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 28px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(216, 183, 106, 0.2);
+      display: grid;
+      gap: 16px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+
+    .deal-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(216, 183, 106, 0.4);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .deal-card .deal-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .deal-card .deal-price {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .deal-card .deal-price .price {
+      color: var(--gold);
+    }
+
+    .deal-card .deal-badge {
+      color: #90f9b4;
+      background: rgba(42, 163, 94, 0.25);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* Player Shops Section */
+    .section.player-shops {
+      background: linear-gradient(135deg, rgba(136, 209, 132, 0.08), rgba(200, 217, 123, 0.05));
+      border: 1px solid rgba(136, 209, 132, 0.2);
+    }
+
+    .player-shops .section-header {
+      margin-bottom: 24px;
+    }
+
+    .player-shops .section-header h2 {
+      color: var(--accent);
+    }
+
+    .shops-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .shop-card {
+      display: grid;
+      gap: 12px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+
+    .shop-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(136, 209, 132, 0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .shop-image {
+      width: 100%;
+      height: 160px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: var(--muted);
+      overflow: hidden;
+      object-fit: cover;
+    }
+
+    .shop-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .shop-content {
+      padding: 16px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .shop-owner {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .shop-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .shop-description {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .shop-popular-item {
+      font-size: 0.9rem;
+      color: var(--accent);
+      font-weight: 600;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
     @media (max-width: 900px) {
       .layout {
         grid-template-columns: 1fr;
@@ -538,7 +711,7 @@
         </section>
 
         <footer class="footer">
-          <div>Last updated: May 26, 2026</div>
+          <div>Last updated: May 31, 2026</div>
           <div>For all your pricing needs.</div>
         </footer>
       </main>
@@ -549,77 +722,87 @@
     // Update the PRICES array to add/remove items or categories.
     // Keep item prices as strings so ranges like "7-10" and exact values like "3" work.
     // Set prevPrice to the previous price string to show a percent change badge.
+    // Add image URL to display item thumbnail (only shows if image is present).
     // Categories: popular, building, decoration, materials, no economy.
     // Subcategories: wool, dyes, ores - normal, ores - deepslate, ores - nether.
     const PRICES = [
-      { name: "Beacon", category: "popular", subcategory: "", price: "22,500", prevPrice: "30,000" },
-      { name: "Heavy Core", category: "popular", subcategory: "", price: "80,000–100,000", prevPrice: null },
-      { name: "Netherite Ingot", category: "popular", subcategory: "", price: "15,000–25,000", prevPrice: null },
-      { name: "Trident w/ enchants", category: "popular", subcategory: "", price: "50,000–75,000", prevPrice: null },
-      { name: "Trident base", category: "popular", subcategory: "", price: "15,000", prevPrice: null },
-      { name: "Enchanted Golden Apple", category: "popular", subcategory: "", price: "20,000–30,000", prevPrice: null },
-      { name: "Bee Key", category: "popular", subcategory: "", price: "300,000", tags:["rare","limited"], prevPrice: "250,000–400,000" },
-      { name: "Mace w/o Wind Burst", category: "popular", subcategory: "", price: "100,000", prevPrice: null },
-      { name: "Mace w/ Wind Burst", category: "popular", subcategory: "", price: "250,000+", prevPrice: null },
-      { name: "All Wool", category: "building", subcategory: "", price: "3", prevPrice: null },
-      { name: "Prismarine", category: "building", subcategory: "Ocean", price: "3", prevPrice: null },
-      { name: "Prismarine Bricks", category: "building", subcategory: "Ocean", price: "6.75", prevPrice: null },
-      { name: "Sea Lantern", category: "building", subcategory: "Ocean", price: "10", prevPrice: null },
-      { name: "White", category: "decoration", subcategory: "dyes", price: "2", prevPrice: null },
-      { name: "Black", category: "decoration", subcategory: "dyes", price: "7–10", prevPrice: null },
-      { name: "Light Blue", category: "decoration", subcategory: "dyes", price: "4", prevPrice: null },
-      { name: "Blue", category: "decoration", subcategory: "dyes", price: "3", prevPrice: null },
-      { name: "Green", category: "decoration", subcategory: "dyes", price: "10–15", prevPrice: null },
-      { name: "Lime", category: "decoration", subcategory: "dyes", price: "5", prevPrice: null },
-      { name: "Cyan", category: "decoration", subcategory: "dyes", price: "12–20", prevPrice: null },
-      { name: "Red", category: "decoration", subcategory: "dyes", price: "3", prevPrice: null },
-      { name: "Purple", category: "decoration", subcategory: "dyes", price: "5", prevPrice: null },
-      { name: "Magenta", category: "decoration", subcategory: "dyes", price: "7", prevPrice: null },
-      { name: "Pink", category: "decoration", subcategory: "dyes", price: "5", prevPrice: null },
-      { name: "Light Gray", category: "decoration", subcategory: "dyes", price: "7–12", prevPrice: null },
-      { name: "Gray", category: "decoration", subcategory: "dyes", price: "6–11", prevPrice: null },
-      { name: "Orange", category: "decoration", subcategory: "dyes", price: "10", prevPrice: null },
-      { name: "Yellow", category: "decoration", subcategory: "dyes", price: "5", prevPrice: null },
-      { name: "Coal", category: "materials", subcategory: "ores - normal", price: "30", prevPrice: null },
-      { name: "Copper", category: "materials", subcategory: "ores - normal", price: "40", prevPrice: null },
-      { name: "Iron", category: "materials", subcategory: "ores - normal", price: "50", prevPrice: null },
-      { name: "Lapis", category: "materials", subcategory: "ores - normal", price: "200", prevPrice: null },
-      { name: "Redstone", category: "materials", subcategory: "ores - normal", price: "200", prevPrice: null },
-      { name: "Gold", category: "materials", subcategory: "ores - normal", price: "200", prevPrice: null },
-      { name: "Diamond", category: "materials", subcategory: "ores - normal", price: "1,000", prevPrice: null },
-      { name: "Emerald", category: "materials", subcategory: "ores - normal", price: "1,000", prevPrice: null },
-      { name: "Coal", category: "materials", subcategory: "ores - deepslate", price: "1,000", prevPrice: null },
-      { name: "Copper", category: "materials", subcategory: "ores - deepslate", price: "40", prevPrice: null },
-      { name: "Iron", category: "materials", subcategory: "ores - deepslate", price: "50", prevPrice: null },
-      { name: "Lapis", category: "materials", subcategory: "ores - deepslate", price: "150", prevPrice: null },
-      { name: "Redstone", category: "materials", subcategory: "ores - deepslate", price: "150", prevPrice: null },
-      { name: "Gold", category: "materials", subcategory: "ores - deepslate", price: "150", prevPrice: null },
-      { name: "Diamond", category: "materials", subcategory: "ores - deepslate", price: "800", prevPrice: null },
-      { name: "Emerald", category: "materials", subcategory: "ores - deepslate", price: "10,000", prevPrice: null },
-      { name: "Nether Gold", category: "materials", subcategory: "ores - nether", price: "50", prevPrice: null },
-      { name: "Nether Quartz", category: "materials", subcategory: "ores - nether", price: "30", prevPrice: null },
-      { name: "Ancient Debris", category: "materials", subcategory: "ores - nether", price: "5,000", prevPrice: null },
-      { name: "Prismarine Shard", category: "materials", subcategory: "items", price: "0.75", prevPrice: null },
-      { name: "Prismarine Crystals", category: "materials", subcategory: "items", price: "1.25", prevPrice: null },
-      { name: "Golden Carrot", category: "food", subcategory: "", price: "13", prevPrice: null },
-      { name: "Carrot", category: "food", subcategory: "", price: "0.50", prevPrice: null },
-      { name: "Bread", category: "food", subcategory: "", price: "1", prevPrice: null },
-      { name: "Baked Potato", category: "food", subcategory: "", price: "2", prevPrice: null },
-      { name: "Cooked Porkchop", category: "food", subcategory: "", price: "20", prevPrice: null },
-      { name: "Pufferfish", category: "food", subcategory: "", price: "500", prevPrice: null },
-      { name: "All Books", category: "books", subcategory: "normal", price: "900", prevPrice: "1,000"},
-      { name: "Wind Burst I", category: "books", subcategory: "special", price: "125,000", prevPrice: null },
-      { name: "Swift Sneak III", category: "books", subcategory: "special", price: "99,000", prevPrice: null },
-      { name: "Soul Speed III", category: "books", subcategory: "special", price: "47,500", prevPrice: null },
-      { name: "Oak", category: "building", subcategory: "logs", price: "40", prevPrice: null },
-      { name: "Dark Oak", category: "building", subcategory: "logs", price: "3", prevPrice: null },
-      { name: "Pale Oak", category: "building", subcategory: "logs", price: "100", prevPrice: null },
-      { name: "Acacia", category: "building", subcategory: "logs", price: "40", prevPrice: null },
-      { name: "Jungle", category: "building", subcategory: "logs", price: "30", prevPrice: null },
-      { name: "Birch", category: "building", subcategory: "logs", price: "5", prevPrice: null },
-      { name: "Cherry", category: "building", subcategory: "logs", price: "45", prevPrice: null },
-      { name: "Spruce", category: "building", subcategory: "logs", price: "16", prevPrice: null },
-      { name: "All Leaves", category: "building", subcategory: "", price: "10", prevPrice: null },
+      { name: "Beacon", category: "popular", subcategory: "", price: "22,500", prevPrice: "30,000", image: "https://minecraft.wiki/images/thumb/Beacon_JE6_BE2.png/150px-Beacon_JE6_BE2.png?684bf" },
+      { name: "Heavy Core", category: "popular", subcategory: "", price: "80,000–100,000", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Heavy_Core_JE1_BE1.png/150px-Heavy_Core_JE1_BE1.png?57df9" },
+      { name: "Netherite Ingot", category: "popular", subcategory: "", price: "15,000–25,000", prevPrice: null, image: "https://minecraft.wiki/images/Netherite_Ingot_JE1_BE2.png?79364" },
+      { name: "Trident w/ enchants", category: "popular", subcategory: "", price: "50,000–75,000", prevPrice: null, image: "https://minecraft.wiki/images/Enchanted_Trident_%28item%29.gif?5eba1" },
+      { name: "Trident base", category: "popular", subcategory: "", price: "15,000", prevPrice: null, image: "https://minecraft.wiki/images/Trident_%28item%29_JE2_BE1.png?6f7d2" },
+      { name: "Enchanted Golden Apple", category: "popular", subcategory: "", price: "20,000–30,000", prevPrice: null, image: "https://minecraft.wiki/images/Enchanted_Golden_Apple_JE2_BE2.gif?f4719" },
+      { name: "Bee Key", category: "popular", subcategory: "", price: "60,000", tags:["rare","limited"], prevPrice: "300,000", image: "" },
+      { name: "Mace w/o Wind Burst", category: "popular", subcategory: "", price: "100,000", prevPrice: null, image: "https://minecraft.wiki/images/Mace_JE1_BE1.png?90f67" },
+      { name: "Mace w/ Wind Burst", category: "popular", subcategory: "", price: "250,000+", prevPrice: null, image: "https://minecraft.wiki/images/Enchanted_Mace.gif?7c432" },
+      { name: "All Wool", category: "building", subcategory: "", price: "3", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Rainbow_Wool_%28inventory%29_MCE.png/150px-Rainbow_Wool_%28inventory%29_MCE.png?57e4a" },
+      { name: "Prismarine", category: "building", subcategory: "Ocean", price: "3", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Prismarine_JE2_BE2.gif/150px-Prismarine_JE2_BE2.gif?655fd" },
+      { name: "Prismarine Bricks", category: "building", subcategory: "Ocean", price: "6.75", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Prismarine_Bricks_JE2_BE2.png/150px-Prismarine_Bricks_JE2_BE2.png?e9b46" },
+      { name: "Sea Lantern", category: "building", subcategory: "Ocean", price: "10", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Sea_Lantern_JE1.gif/150px-Sea_Lantern_JE1.gif?62a76" },
+      { name: "White", category: "decoration", subcategory: "dyes", price: "2", prevPrice: null, image: "https://minecraft.wiki/images/White_Dye_JE2_BE2.png?f9a07" },
+      { name: "Black", category: "decoration", subcategory: "dyes", price: "7–10", prevPrice: null, image: "https://minecraft.wiki/images/Black_Dye_JE2_BE2.png?48e23" },
+      { name: "Light Blue", category: "decoration", subcategory: "dyes", price: "4", prevPrice: null, image: "https://minecraft.wiki/images/Light_Blue_Dye_JE3_BE3.png?9d9bf" },
+      { name: "Blue", category: "decoration", subcategory: "dyes", price: "3", prevPrice: null, image: "https://minecraft.wiki/images/Blue_Dye_JE2_BE2.png?d8f99" },
+      { name: "Green", category: "decoration", subcategory: "dyes", price: "10–15", prevPrice: null, image: "https://minecraft.wiki/images/Green_Dye_JE4_BE4.png?635d8" },
+      { name: "Lime", category: "decoration", subcategory: "dyes", price: "5", prevPrice: null, image: "https://minecraft.wiki/images/Lime_Dye_JE3_BE3.png?b78e2" },
+      { name: "Cyan", category: "decoration", subcategory: "dyes", price: "12–20", prevPrice: null, image: "https://minecraft.wiki/images/Cyan_Dye_JE3_BE3.png?facb1" },
+      { name: "Red", category: "decoration", subcategory: "dyes", price: "3", prevPrice: null, image: "https://minecraft.wiki/images/Red_Dye_JE4_BE4.png?2d46c" },
+      { name: "Purple", category: "decoration", subcategory: "dyes", price: "5", prevPrice: null, image: "https://minecraft.wiki/images/Purple_Dye_JE3_BE3.png?9c8a1" },
+      { name: "Magenta", category: "decoration", subcategory: "dyes", price: "7", prevPrice: null, image: "https://minecraft.wiki/images/Magenta_Dye_JE3_BE3.png?e6f8c" },
+      { name: "Pink", category: "decoration", subcategory: "dyes", price: "5", prevPrice: null, image: "https://minecraft.wiki/images/Pink_Dye_JE3_BE3.png?fef42" },
+      { name: "Light Gray", category: "decoration", subcategory: "dyes", price: "7–12", prevPrice: null, image: "https://minecraft.wiki/images/Light_Gray_Dye_JE3_BE3.png?75a6d" },
+      { name: "Gray", category: "decoration", subcategory: "dyes", price: "6–11", prevPrice: null, image: "https://minecraft.wiki/images/Gray_Dye_JE3_BE3.png?7e2cb" },
+      { name: "Orange", category: "decoration", subcategory: "dyes", price: "10", prevPrice: null, image: "https://minecraft.wiki/images/Orange_Dye_JE3_BE3.png?7f1e2" },
+      { name: "Yellow", category: "decoration", subcategory: "dyes", price: "5", prevPrice: null, image: "https://minecraft.wiki/images/Yellow_Dye_JE3_BE3.png?b9cde" },
+      { name: "Coal", category: "materials", subcategory: "ores - normal", price: "30", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Coal_Ore_JE5_BE4.png/150px-Coal_Ore_JE5_BE4.png?73bee" },
+      { name: "Copper", category: "materials", subcategory: "ores - normal", price: "40", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Copper_Ore_JE2_BE2.png/150px-Copper_Ore_JE2_BE2.png?073cd" },
+      { name: "Iron", category: "materials", subcategory: "ores - normal", price: "50", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Iron_Ore_JE6_BE4.png/150px-Iron_Ore_JE6_BE4.png?b1fb3" },
+      { name: "Lapis", category: "materials", subcategory: "ores - normal", price: "200", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Lapis_Lazuli_Ore_JE4_BE4.png/150px-Lapis_Lazuli_Ore_JE4_BE4.png?73194" },
+      { name: "Redstone", category: "materials", subcategory: "ores - normal", price: "200", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Redstone_Ore_JE4_BE3.png/150px-Redstone_Ore_JE4_BE3.png?69549" },
+      { name: "Gold", category: "materials", subcategory: "ores - normal", price: "200", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Gold_Ore_JE7_BE4.png/150px-Gold_Ore_JE7_BE4.png?9817a" },
+      { name: "Diamond", category: "materials", subcategory: "ores - normal", price: "1,000", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Diamond_Ore_JE5_BE5.png/150px-Diamond_Ore_JE5_BE5.png?fa2f4" },
+      { name: "Emerald", category: "materials", subcategory: "ores - normal", price: "1,000", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Emerald_Ore_JE4_BE3.png/150px-Emerald_Ore_JE4_BE3.png?02ea7" },
+      { name: "Coal", category: "materials", subcategory: "ores - deepslate", price: "1,000", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Deepslate_Coal_Ore_JE1_BE2.png/150px-Deepslate_Coal_Ore_JE1_BE2.png?30fe4" },
+      { name: "Copper", category: "materials", subcategory: "ores - deepslate", price: "40", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Deepslate_Copper_Ore_JE2_BE2.png/150px-Deepslate_Copper_Ore_JE2_BE2.png?35b66" },
+      { name: "Iron", category: "materials", subcategory: "ores - deepslate", price: "50", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Deepslate_Iron_Ore_JE2_BE1.png/150px-Deepslate_Iron_Ore_JE2_BE1.png?f4fb9" },
+      { name: "Lapis", category: "materials", subcategory: "ores - deepslate", price: "150", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Deepslate_Lapis_Lazuli_Ore_JE3_BE2.png/150px-Deepslate_Lapis_Lazuli_Ore_JE3_BE2.png?7c96d" },
+      { name: "Redstone", category: "materials", subcategory: "ores - deepslate", price: "150", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Deepslate_Redstone_Ore_JE2_BE1.png/150px-Deepslate_Redstone_Ore_JE2_BE1.png?b1835" },
+      { name: "Gold", category: "materials", subcategory: "ores - deepslate", price: "150", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Deepslate_Gold_Ore_JE2_BE1.png/150px-Deepslate_Gold_Ore_JE2_BE1.png?c965d" },
+      { name: "Diamond", category: "materials", subcategory: "ores - deepslate", price: "800", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Deepslate_Diamond_Ore_JE2_BE1.png/150px-Deepslate_Diamond_Ore_JE2_BE1.png?ce0d8" },
+      { name: "Emerald", category: "materials", subcategory: "ores - deepslate", price: "10,000", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Deepslate_Emerald_Ore_JE1_BE1.png/150px-Deepslate_Emerald_Ore_JE1_BE1.png?4ca93" },
+      { name: "Nether Gold", category: "materials", subcategory: "ores - nether", price: "50", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Nether_Gold_Ore_JE2_BE1.png/150px-Nether_Gold_Ore_JE2_BE1.png?c7842" },
+      { name: "Nether Quartz", category: "materials", subcategory: "ores - nether", price: "30", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Nether_Quartz_Ore_JE3_BE2.png/150px-Nether_Quartz_Ore_JE3_BE2.png?f3464" },
+      { name: "Ancient Debris", category: "materials", subcategory: "ores - nether", price: "5,000", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Ancient_Debris_JE1_BE1.png/150px-Ancient_Debris_JE1_BE1.png?571c1" },
+      { name: "Prismarine Shard", category: "materials", subcategory: "items", price: "0.75", prevPrice: null, image: "https://minecraft.wiki/images/Prismarine_Shard_JE2_BE2.png?ef03b" },
+      { name: "Prismarine Crystals", category: "materials", subcategory: "items", price: "1.25", prevPrice: null, image: "https://minecraft.wiki/images/Prismarine_Crystals_JE2_BE2.png?8d8af" },
+      { name: "Golden Carrot", category: "food", subcategory: "", price: "13", prevPrice: null, image: "https://minecraft.wiki/images/Golden_Carrot_JE4_BE2.png?43b25" },
+      { name: "Carrot", category: "food", subcategory: "", price: "0.50", prevPrice: null, image: "https://minecraft.wiki/images/Carrot_JE3_BE2.png?5e9c8" },
+      { name: "Bread", category: "food", subcategory: "", price: "1", prevPrice: null, image: "https://minecraft.wiki/images/Bread_JE3_BE3.png?e1046" },
+      { name: "Baked Potato", category: "food", subcategory: "", price: "2", prevPrice: null, image: "https://minecraft.wiki/images/Baked_Potato_JE4_BE2.png?18727" },
+      { name: "Cooked Porkchop", category: "food", subcategory: "", price: "20", prevPrice: null, image: "https://minecraft.wiki/images/Cooked_Porkchop_JE4_BE3.png?d99d3" },
+      { name: "Pufferfish", category: "food", subcategory: "", price: "500", prevPrice: null, image: "https://minecraft.wiki/images/Pufferfish_%28item%29_JE5_BE2.png?c436f" },
+      { name: "All Enchanted Books", category: "books", subcategory: "normal", price: "900", prevPrice: "1,000", image: "https://minecraft.wiki/images/Enchanted_Book.gif?b21c4" },
+      { name: "Wind Burst I", category: "books", subcategory: "special", price: "125,000", prevPrice: null, image: "https://minecraft.wiki/images/Enchanted_Book.gif?b21c4" },
+      { name: "Swift Sneak III", category: "books", subcategory: "special", price: "99,000", prevPrice: null, image: "https://minecraft.wiki/images/Enchanted_Book.gif?b21c4" },
+      { name: "Soul Speed III", category: "books", subcategory: "special", price: "47,500", prevPrice: null, image: "https://minecraft.wiki/images/Enchanted_Book.gif?b21c4" },
+      { name: "Oak", category: "building", subcategory: "logs", price: "40", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Oak_Log_%28UD%29_JE8_BE3.png/150px-Oak_Log_%28UD%29_JE8_BE3.png?8a080" },
+      { name: "Dark Oak", category: "building", subcategory: "logs", price: "3", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Dark_Oak_Log_%28UD%29_JE9_BE4.png/150px-Dark_Oak_Log_%28UD%29_JE9_BE4.png?611f7" },
+      { name: "Pale Oak", category: "building", subcategory: "logs", price: "100", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Pale_Oak_Log_%28UD%29_JE1_BE1.png/150px-Pale_Oak_Log_%28UD%29_JE1_BE1.png?355d2" },
+      { name: "Acacia", category: "building", subcategory: "logs", price: "40", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Acacia_Log_%28UD%29_JE8_BE3.png/150px-Acacia_Log_%28UD%29_JE8_BE3.png?fe576" },
+      { name: "Jungle", category: "building", subcategory: "logs", price: "30", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Jungle_Log_%28UD%29_JE9_BE4.png/150px-Jungle_Log_%28UD%29_JE9_BE4.png?a69e4" },
+      { name: "Birch", category: "building", subcategory: "logs", price: "5", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Birch_Log_%28UD%29_JE8_BE4.png/150px-Birch_Log_%28UD%29_JE8_BE4.png?9d0bb" },
+      { name: "Cherry", category: "building", subcategory: "logs", price: "45", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Cherry_Log_%28UD%29_JE1_BE1.png/150px-Cherry_Log_%28UD%29_JE1_BE1.png?1ba26" },
+      { name: "Spruce", category: "building", subcategory: "logs", price: "16", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Spruce_Log_%28UD%29_JE8_BE4.png/150px-Spruce_Log_%28UD%29_JE8_BE4.png?e8bbe" },
+      { name: "All Leaves", category: "building", subcategory: "", price: "10", prevPrice: null, image: "https://minecraft.wiki/images/thumb/Cherry_Leaves_JE2.png/150px-Cherry_Leaves_JE2.png?7f78f" },
+    ];
+
+    // Add player shops to this array to display them.
+    // Each shop needs: owner, shopName, description, imageUrl (optional - 🏪 emoji used if empty), popularItem
+    // Example shop:
+    // { owner: "aliwho", shopName: "Economy Depot", description: "Your one-stop shop for all economy items at fair prices", imageUrl: "", popularItem: "Diamond" }
+    // The Player Shops section will automatically hide if this array is empty.
+    const PLAYER_SHOPS = [
+      { owner: "Patrick23849", shopName: "Guardian Shop", description: "Selling guardian loot. (contact for better description patrick, lol)", imageUrl: "images\2026-05-31_11.31.20.png"}
     ];
 
     const sectionOrder = [
@@ -648,9 +831,29 @@
     function displayTitle(text) {
       return text
         .toString()
-        .split(" ")
+        .split(/\s+|-/)
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
+    }
+
+    function findBiggestDeal() {
+      let biggestDeal = null;
+      let biggestPercentage = 0;
+
+      PRICES.forEach((item) => {
+        if (!item.prevPrice) return;
+        const cur = parseNumeric(item.price);
+        const prev = parseNumeric(item.prevPrice);
+        if (cur == null || prev == null || prev === 0) return;
+
+        const percentChange = ((prev - cur) / prev) * 100;
+        if (percentChange > biggestPercentage) {
+          biggestPercentage = percentChange;
+          biggestDeal = { item, percentage: Math.round(percentChange) };
+        }
+      });
+
+      return biggestPercentage > 0 ? biggestDeal : null;
     }
 
     function getSections() {
@@ -658,7 +861,7 @@
       PRICES.forEach((item) => unique.add(item.category));
       let sections = Array.from(unique);
 
-      // Ensure 'popular' is first
+      // Ensure 'popular' is first (after special sections)
       const pIdx = sections.indexOf("popular");
       if (pIdx > 0) {
         sections.splice(pIdx, 1);
@@ -696,6 +899,18 @@
         sections.push("no economy");
       }
 
+      // Add special sections at the beginning, before 'popular'
+      const dealOfTheDay = findBiggestDeal();
+      if (dealOfTheDay) {
+        sections.unshift("deal-of-the-day");
+      }
+
+      if (PLAYER_SHOPS.length > 0) {
+        const dealIdx = sections.indexOf("deal-of-the-day");
+        const insertPosition = dealIdx !== -1 ? dealIdx + 1 : 0;
+        sections.splice(insertPosition, 0, "player-shops");
+      }
+
       return sections;
     }
 
@@ -714,6 +929,13 @@
         sectionEl.className = "section";
         sectionEl.id = normalizeId(section);
         sectionEl.dataset.section = section;
+
+        // Add special class for deal-of-the-day and player-shops
+        if (section === "deal-of-the-day") {
+          sectionEl.classList.add("deal-of-the-day");
+        } else if (section === "player-shops") {
+          sectionEl.classList.add("player-shops");
+        }
 
         const header = document.createElement("div");
         header.className = "section-header";
@@ -839,118 +1061,209 @@
         const container = document.getElementById(`category-${normalizeId(section)}`);
         container.innerHTML = "";
 
-        let matches;
-        if (section === "price increases") {
-          matches = PRICES.filter((item) => {
-            if (!item.prevPrice) return false;
-            const cur = parseNumeric(item.price);
-            const prev = parseNumeric(item.prevPrice);
-            if (cur == null || prev == null) return false;
-            const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
-            return cur > prev && searchText.includes(filter);
-          });
-        } else if (section === "price decreases") {
-          matches = PRICES.filter((item) => {
-            if (!item.prevPrice) return false;
-            const cur = parseNumeric(item.price);
-            const prev = parseNumeric(item.prevPrice);
-            if (cur == null || prev == null) return false;
-            const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
-            return cur < prev && searchText.includes(filter);
-          });
-        } else {
-          matches = PRICES.filter((item) => {
-            const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
-            return item.category === section && searchText.includes(filter);
-          });
-        }
-
-        if (!matches.length) {
-          const empty = document.createElement("div");
-          empty.className = "placeholder";
-          empty.textContent = filter ? "No matching items found." : "No items are available in this category yet.";
-          container.appendChild(empty);
-          return;
-        }
-
-        let subcategories;
-        if (section === "price increases" || section === "price decreases") {
-          const vals = matches.map((item) => item.subcategory || "").filter((v, i, self) => self.indexOf(v) === i);
-          subcategories = vals.length ? vals : [""];
-        } else {
-          subcategories = getSubcategories(section);
-        }
-
-        subcategories.forEach((subcategory) => {
-          let groupItems = matches.filter((item) => (item.subcategory || "") === subcategory);
-
-          // Optional sorting when enabled
-          if (enableSort && enableSort.checked) {
-            const key = sortKey.value;
-            const order = sortOrder.value;
-            groupItems.sort((a, b) => {
-              if (key === "price") {
-                const na = parseNumeric(a.price);
-                const nb = parseNumeric(b.price);
-                const va = na == null ? -Infinity : na;
-                const vb = nb == null ? -Infinity : nb;
-                return order === "desc" ? vb - va : va - vb;
-              }
-              // name
-              const cmp = a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
-              return order === "desc" ? -cmp : cmp;
-            });
-          }
-          if (!groupItems.length) return;
-
-          if (subcategory && section !== "price decreases" && section !== "price increases") {
-            const subheading = document.createElement("h3");
-            subheading.className = "subcategory-header";
-            subheading.textContent = displayTitle(subcategory);
-            container.appendChild(subheading);
-          }
-
-          const grid = document.createElement("div");
-          grid.className = "item-grid";
-
-          groupItems.forEach((item) => {
-            const card = document.createElement("article");
-            card.className = "card";
+        if (section === "deal-of-the-day") {
+          const deal = findBiggestDeal();
+          if (deal) {
+            const dealCard = document.createElement("div");
+            dealCard.className = "deal-card";
 
             const title = document.createElement("div");
-            title.className = "card-title";
+            title.className = "deal-title";
+            title.textContent = deal.item.name;
 
-            const left = document.createElement('div');
-            left.style.display = 'inline-flex';
-            left.style.alignItems = 'center';
-            left.style.gap = '8px';
-
-            const name = document.createElement("span");
-            name.textContent = item.name;
-
-            const tagsEl = createTagsContainer(item);
-
-            left.append(name, tagsEl);
+            const priceDiv = document.createElement("div");
+            priceDiv.className = "deal-price";
 
             const price = document.createElement("span");
             price.className = "price";
-            price.textContent = formatPrice(item.price);
-            title.append(left, price);
+            price.textContent = formatPrice(deal.item.price);
 
-            const meta = document.createElement("div");
-            meta.className = "item-meta";
-            const categoryLabel = document.createElement("span");
-            categoryLabel.textContent = displayTitle(item.category);
-            meta.appendChild(categoryLabel);
+            const badge = document.createElement("span");
+            badge.className = "deal-badge";
+            badge.textContent = `▼ ${deal.percentage}%`;
 
-            const badge = makeBadge(item.price, item.prevPrice);
-            if (badge) meta.appendChild(badge);
-            card.append(title, meta);
-            grid.appendChild(card);
+            priceDiv.append(price, badge);
+
+            dealCard.append(title, priceDiv);
+            container.appendChild(dealCard);
+          }
+        } else if (section === "player-shops") {
+          if (PLAYER_SHOPS.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "placeholder";
+            empty.textContent = "No player shops available yet.";
+            container.appendChild(empty);
+            return;
+          }
+
+          const shopsGrid = document.createElement("div");
+          shopsGrid.className = "shops-grid";
+
+          PLAYER_SHOPS.forEach((shop) => {
+            const shopCard = document.createElement("div");
+            shopCard.className = "shop-card";
+
+            const imageDiv = document.createElement("div");
+            imageDiv.className = "shop-image";
+            if (shop.imageUrl) {
+              const img = document.createElement("img");
+              img.src = shop.imageUrl;
+              img.alt = shop.shopName || "Shop image";
+              imageDiv.appendChild(img);
+            } else {
+              imageDiv.textContent = "🏪";
+            }
+
+            const content = document.createElement("div");
+            content.className = "shop-content";
+
+            const owner = document.createElement("div");
+            owner.className = "shop-owner";
+            owner.textContent = `by ${shop.owner}`;
+
+            const shopName = document.createElement("div");
+            shopName.className = "shop-name";
+            shopName.textContent = shop.shopName;
+
+            const description = document.createElement("div");
+            description.className = "shop-description";
+            description.textContent = shop.description;
+
+            const popularItem = document.createElement("div");
+            popularItem.className = "shop-popular-item";
+            popularItem.textContent = `Most popular: ${shop.popularItem}`;
+
+            content.append(owner, shopName, description, popularItem);
+            shopCard.append(imageDiv, content);
+            shopsGrid.appendChild(shopCard);
           });
 
-          container.appendChild(grid);
-        });
+          container.appendChild(shopsGrid);
+        } else {
+          let matches;
+          if (section === "price increases") {
+            matches = PRICES.filter((item) => {
+              if (!item.prevPrice) return false;
+              const cur = parseNumeric(item.price);
+              const prev = parseNumeric(item.prevPrice);
+              if (cur == null || prev == null) return false;
+              const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
+              return cur > prev && searchText.includes(filter);
+            });
+          } else if (section === "price decreases") {
+            matches = PRICES.filter((item) => {
+              if (!item.prevPrice) return false;
+              const cur = parseNumeric(item.price);
+              const prev = parseNumeric(item.prevPrice);
+              if (cur == null || prev == null) return false;
+              const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
+              return cur < prev && searchText.includes(filter);
+            });
+          } else {
+            matches = PRICES.filter((item) => {
+              const searchText = `${item.name} ${item.category} ${item.subcategory}`.toLowerCase();
+              return item.category === section && searchText.includes(filter);
+            });
+          }
+
+          if (!matches.length) {
+            const empty = document.createElement("div");
+            empty.className = "placeholder";
+            empty.textContent = filter ? "No matching items found." : "No items are available in this category yet.";
+            container.appendChild(empty);
+            return;
+          }
+
+          let subcategories;
+          if (section === "price increases" || section === "price decreases") {
+            const vals = matches.map((item) => item.subcategory || "").filter((v, i, self) => self.indexOf(v) === i);
+            subcategories = vals.length ? vals : [""];
+          } else {
+            subcategories = getSubcategories(section);
+          }
+
+          subcategories.forEach((subcategory) => {
+            let groupItems = matches.filter((item) => (item.subcategory || "") === subcategory);
+
+            // Optional sorting when enabled
+            if (enableSort && enableSort.checked) {
+              const key = sortKey.value;
+              const order = sortOrder.value;
+              groupItems.sort((a, b) => {
+                if (key === "price") {
+                  const na = parseNumeric(a.price);
+                  const nb = parseNumeric(b.price);
+                  const va = na == null ? -Infinity : na;
+                  const vb = nb == null ? -Infinity : nb;
+                  return order === "desc" ? vb - va : va - vb;
+                }
+                // name
+                const cmp = a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+                return order === "desc" ? -cmp : cmp;
+              });
+            }
+            if (!groupItems.length) return;
+
+            if (subcategory && section !== "price decreases" && section !== "price increases") {
+              const subheading = document.createElement("h3");
+              subheading.className = "subcategory-header";
+              subheading.textContent = displayTitle(subcategory);
+              container.appendChild(subheading);
+            }
+
+            const grid = document.createElement("div");
+            grid.className = "item-grid";
+
+            groupItems.forEach((item) => {
+              const card = document.createElement("article");
+              card.className = "card";
+
+              const title = document.createElement("div");
+              title.className = "card-title";
+
+              const left = document.createElement('div');
+              left.style.display = 'inline-flex';
+              left.style.alignItems = 'center';
+              left.style.gap = '8px';
+
+              // Add item image if present
+              if (item.image) {
+                const imageBox = document.createElement("div");
+                imageBox.className = "item-image";
+                const img = document.createElement("img");
+                img.src = item.image;
+                img.alt = item.name;
+                imageBox.appendChild(img);
+                left.appendChild(imageBox);
+              }
+
+              const name = document.createElement("span");
+              name.textContent = item.name;
+
+              const tagsEl = createTagsContainer(item);
+
+              left.append(name, tagsEl);
+
+              const price = document.createElement("span");
+              price.className = "price";
+              price.textContent = formatPrice(item.price);
+              title.append(left, price);
+
+              const meta = document.createElement("div");
+              meta.className = "item-meta";
+              const categoryLabel = document.createElement("span");
+              categoryLabel.textContent = displayTitle(item.category);
+              meta.appendChild(categoryLabel);
+
+              const badge = makeBadge(item.price, item.prevPrice);
+              if (badge) meta.appendChild(badge);
+              card.append(title, meta);
+              grid.appendChild(card);
+            });
+
+            container.appendChild(grid);
+          });
+        }
       });
     }
 
