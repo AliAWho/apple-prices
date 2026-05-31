@@ -802,7 +802,7 @@
     // { owner: "aliwho", shopName: "Economy Depot", description: "Your one-stop shop for all economy items at fair prices", imageUrl: "", popularItem: "Diamond" }
     // The Player Shops section will automatically hide if this array is empty.
     const PLAYER_SHOPS = [
-      { owner: "Patrick23849", shopName: "Guardian Shop", description: "Selling guardian loot. (contact for better description patrick, lol)", imageUrl: "images\2026-05-31_11.31.20.png"}
+      { owner: "Patrick23849", shopName: "Guardian Shop", description: "Selling guardian loot. (contact for better description patrick, lol)", imageUrl: "https://private-user-images.githubusercontent.com/149331787/600614127-ca1fbda1-bf39-4124-9af3-9ac8370c4d6e.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODAyNDI1OTEsIm5iZiI6MTc4MDI0MjI5MSwicGF0aCI6Ii8xNDkzMzE3ODcvNjAwNjE0MTI3LWNhMWZiZGExLWJmMzktNDEyNC05YWYzLTlhYzgzNzBjNGQ2ZS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwNTMxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDUzMVQxNTQ0NTFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hZDQxOTY4MTk4YzcyZGRjMTExNjBmY2Y5MDcwNzc4YWE3ZGRiOGNlZWZkM2RmNTU1MWIyMTlhMDA1ODk2YzNiJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.l9R-U2bkCVFFRFODiWzKNBYluijyxELtN9p7PL6P0wU", popularItem: "Prismarine"}
     ];
 
     const sectionOrder = [
@@ -975,6 +975,22 @@
       return numberMatch ? Number(numberMatch[0]) : null;
     }
 
+    // Resolve image URLs so relative paths work (relative to the current document).
+    // Accepts absolute URLs, data URLs, and relative paths.
+    function resolveImageUrl(url) {
+      if (!url) return null;
+      // Normalize backslashes (Windows paths) and trim
+      const cleaned = url.replace(/\\\\/g, "/").trim();
+      // allow data URLs and protocol-absolute URLs
+      if (/^data:|^https?:|^\/\//i.test(cleaned)) return cleaned;
+      try {
+        // Resolve relative to the document base (works with file:// and http://)
+        return new URL(cleaned, document.baseURI).href;
+      } catch (e) {
+        return cleaned;
+      }
+    }
+
     function isRangePrice(price) {
       if (!price) return false;
       const normalized = price.replace(/,/g, "").replace(/\+/g, "").trim();
@@ -1107,7 +1123,8 @@
             imageDiv.className = "shop-image";
             if (shop.imageUrl) {
               const img = document.createElement("img");
-              img.src = shop.imageUrl;
+              const resolved = resolveImageUrl(shop.imageUrl);
+              if (resolved) img.src = resolved;
               img.alt = shop.shopName || "Shop image";
               imageDiv.appendChild(img);
             } else {
@@ -1231,7 +1248,8 @@
                 const imageBox = document.createElement("div");
                 imageBox.className = "item-image";
                 const img = document.createElement("img");
-                img.src = item.image;
+                const resolved = resolveImageUrl(item.image);
+                if (resolved) img.src = resolved;
                 img.alt = item.name;
                 imageBox.appendChild(img);
                 left.appendChild(imageBox);
